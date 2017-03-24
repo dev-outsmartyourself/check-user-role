@@ -1,4 +1,4 @@
-check-user-role, seu amiguinho
+check-user-role
 =========
 
 
@@ -10,37 +10,54 @@ check-user-role, seu amiguinho
 ## Usage
 
   ```js
-  import check-user-role from 'check-user-role'
+  import CheckUserRole from 'check-user-role'
 
-  const check-user-roleMiddleware = check-user-role({
-    webhookUrl: 'WEBHOOK_URL',
-    shouldSendToSlack: (err) => err.statusCode === 500
+  const checkUserRole = CheckUserRole({
+    superUser: 'admin',
+    errorObject: new Error('Unauthorized'),
+    roleGetter: (req) => req.myAuthenticatedUser && req.myAuthenticatedUser.role,
   })
-
-  //  At the end of your middleware chain
-  app.use(check-user-roleMiddleware())
   ```
 
-  You can pass additional config to check-user-role to make it even better
-  ```
-  String channel,
-  String iconUrl,
-  String username,
-  Function getText,
-  ```
-
-  The function getText will receive this object on it's first param:
-  ```
-  {
-    packageName,
-    platform,
-    env = 'development',
-    ip,
-    err,
-  }
+  If no roleGetter is provided, will use default req.user.role
+  If no errorObject is provided, will use the default
+  ```js
+  Error({
+    statusCode: 403,
+    message: 'Forbidden',
+  })
   ```
 
-  So you can build your own custom message :)
+  ```js
+  const lumberjackOrFarmerChecker = checkUserRole(['lumberjack', 'farmer'])
+
+  router.get('/enter-the-farm',
+    app.auth.authenticate(),
+    lumberjackOrFarmerChecker,
+    (req, res) => {
+      // Do whatever farmers and lumberjacks do at a farm
+    }
+  ```
+
+  ```js
+  const lumberjackChecker = checkUserRole(['lumberjack'])
+  router.get('/chop-trees',
+    app.auth.authenticate(),
+    lumberjackChecker,
+    (req, res) => {
+      // Chop some trees
+    }
+  ```
+
+  ```js
+  const farmerChecker = checkUserRole(['farmer'])
+  router.get('/farm',
+    app.auth.authenticate(),
+    lumberjackChecker,
+    (req, res) => {
+      // Farms
+    }
+  ```
 
 ## Tests
 
