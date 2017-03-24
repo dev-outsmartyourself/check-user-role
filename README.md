@@ -22,10 +22,7 @@ check-user-role
   If no roleGetter is provided, will use default req.user.role
   If no errorObject is provided, will use the default
   ```js
-  Error({
-    statusCode: 403,
-    message: 'Forbidden',
-  })
+  Error(403)
   ```
 
   ```js
