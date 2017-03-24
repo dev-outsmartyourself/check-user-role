@@ -50,7 +50,7 @@ check-user-role
   const farmerChecker = checkUserRole(['farmer'])
   router.get('/farm',
     app.auth.authenticate(),
-    lumberjackChecker,
+    farmerChecker,
     (req, res) => {
       // Farms
     }
