@@ -14,6 +14,10 @@ const checkUserRoleWithCustomRoleGetter = CheckUserRole({
   errorObject: new Error('Unauthorized')
 })
 
+const checkUserRoleWithDefaultErrorObject = CheckUserRole({
+  superUser: 'admin',
+})
+
 describe('Check User Role tests', () => {
   it('Should dispatch error', done => {
     const req = {
@@ -86,6 +90,23 @@ describe('Check User Role tests', () => {
 
     checkIsAdmin(req, null, (err) => {
       assert.isUndefined(err)
+      done()
+    })
+  })
+
+
+  it('Should dispatch error with default errorObject', done => {
+    const req = {
+      user: {
+        role: 'farmer'
+      }
+    }
+
+    const checkIsLumberjack = checkUserRoleWithDefaultErrorObject(['lumberjack'])
+
+    checkIsLumberjack(req, null, (err) => {
+      assert(err instanceof Error, 'error must be instance of Error')
+      assert(Number(err.message) === 403, 'error message should be 403')
       done()
     })
   })
