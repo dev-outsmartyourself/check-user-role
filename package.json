@@ -1,6 +1,6 @@
 {
   "name": "check-user-role",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Middleware to check user roles",
   "main": "lib/index.js",
   "scripts": {
@@ -18,9 +18,9 @@
     "node": ">=4.2.4"
   },
   "keywords": [
-    "slack",
-    "crash",
-    "report"
+    "check",
+    "user",
+    "role"
   ],
   "author": "Rafael Ribeiro <rafael.correia.poli@gmail.com>",
   "license": "ISC",
